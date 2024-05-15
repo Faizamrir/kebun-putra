@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\product;
 use App\Http\Requests\StoreproductRequest;
 use App\Http\Requests\UpdateproductRequest;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -14,7 +16,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = product::all();
+        return view('dashboard-admin', compact('products'));
     }
 
     /**
@@ -31,12 +34,11 @@ class ProductController extends Controller
     public function store(StoreproductRequest $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'nama' => 'required',
             'harga' => 'required',
             'deskripsi' => 'required',
-            'img' => 'required'
+            'img' => 'required|file|size:10000'
         ]);
-
         if($validator->fails()){
             return redirect()
             ->back()
@@ -44,14 +46,15 @@ class ProductController extends Controller
             ->withInput();
         }else{
             $data = [
-                'name' => $request->get('name'),
+                'nama' => $request->get('nama'),
                 'harga' => $request->get('harga'),
                 'deskripsi' => $request->get('deskripsi'),
-                'img' => $request->get('img')
+                'img' => $request->file('img')->getClientOriginalName()
             ];
-
-            product::create($data);
+            $request->file('img')->storeAs('images', $data['img'], 'public');
         }
+        product::create($data);
+        return redirect()->route('dashboard-admin');
     }
 
     /**
@@ -66,9 +69,10 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(product $product)
+    public function edit($id)
     {
-        //
+        $product = product::find($id);
+        return $product;
     }
 
     /**
@@ -76,14 +80,36 @@ class ProductController extends Controller
      */
     public function update(UpdateproductRequest $request, product $product)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'harga' => 'required',
+            'deskripsi' => 'required',
+            'img' => 'required'
+        ]);
+
+        if($validator->fails()){
+            return redirect()
+            ->back()
+            ->withErrors($validator)
+            ->withInput();
+        } else {
+            $data = [
+                'name' => $request->get('name'),
+                'harga' => $request->get('harga'),
+                'deskripsi' => $request->get('deskripsi'),
+                'img' => $request->get('img')
+            ];
+        }
+        product::where('id', $request->get('id'))->update($data);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(product $product)
+    public function destroy($product)
     {
-        //
+        if(Auth::user()->is_admin){
+            product::where('id', $product->id)->delete();
+        }
     }
 }
