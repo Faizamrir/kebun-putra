@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -20,6 +22,18 @@ Route::controller(ProductController::class)->middleware(['auth', 'verified'])
 ->group(function () {
     Route::get('/dashboard-admin', 'index')->name('dashboard-admin');
     Route::post('/product-store', 'store')->name('product-store');
+    Route::put('/product-update/{id}', 'update')->name('product-update');
+    Route::delete('/product-delete/{id}', 'destroy')->name('product-delete');
+});
+
+Route::controller(LaporanController::class)->middleware(['auth', 'verified'])->group(function () {
+    Route::get('/laporan', 'index')->name('laporan');
+    Route::get('/laporan-pdf/{date}', 'cetakpdf')->name('laporan-pdf');
+});
+
+Route::controller(PembelianController::class)->middleware(['auth', 'verified'])->group(function () {
+    Route::get('/transaksi-admin', 'index')->name('transaksi-admin');
+    Route::post('/approve/{id}', 'approve')->name('approve');
 });
 
 Route::middleware('auth')->group(function () {

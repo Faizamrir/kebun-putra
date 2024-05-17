@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('pembelians', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_user');
             $table->dateTime('tgl_pembelian');
             $table->dateTime('tgl_pembayaran')->nullable();
-            $table->boolean('status_pembayaran');
-            $table->string('detail_pembelian');
+            $table->boolean('status_pembayaran')->default(0);
             $table->integer('total');
+            $table->string('bukti_pembayaran')->nullable();
+            $table->foreign('id_user')->references('id')->on('users');
             $table->timestamps();
         });
     }

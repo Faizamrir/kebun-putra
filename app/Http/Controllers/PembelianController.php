@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\pembelian;
 use App\Http\Requests\StorepembelianRequest;
 use App\Http\Requests\UpdatepembelianRequest;
+use Carbon\Carbon;
+
 
 class PembelianController extends Controller
 {
@@ -13,7 +15,8 @@ class PembelianController extends Controller
      */
     public function index()
     {
-        //
+        $pembelian = pembelian::with('user', 'detail_pembelian.product')->get();
+        return view('transaksi-admin', compact('pembelian'));
     }
 
     /**
@@ -62,5 +65,15 @@ class PembelianController extends Controller
     public function destroy(pembelian $pembelian)
     {
         //
+    }
+
+    public function approve($id)
+    {
+        $pembelian = pembelian::find($id);
+        $pembelian->update([
+            'status_pembayaran' => 1,
+            'tgl_pembayaran' => Carbon::now()
+        ]);
+        return redirect()->route('transaksi-admin');
     }
 }

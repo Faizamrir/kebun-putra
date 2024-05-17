@@ -16,6 +16,11 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    public function pembelian(){
+        return $this->hasMany(Pembelian::class, 'id_user', 'id');
+    }
+
     protected $fillable = [
         'name',
         'email',

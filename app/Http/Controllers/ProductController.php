@@ -33,13 +33,15 @@ class ProductController extends Controller
      */
     public function store(StoreproductRequest $request)
     {
+        
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
             'harga' => 'required',
             'deskripsi' => 'required',
-            'img' => 'required|file|size:10000'
+            'img' => 'required|file|max:10240'
         ]);
         if($validator->fails()){
+            dd($request);
             return redirect()
             ->back()
             ->withErrors($validator)
@@ -81,10 +83,9 @@ class ProductController extends Controller
     public function update(UpdateproductRequest $request, product $product)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'nama' => 'required',
             'harga' => 'required',
             'deskripsi' => 'required',
-            'img' => 'required'
         ]);
 
         if($validator->fails()){
@@ -93,23 +94,34 @@ class ProductController extends Controller
             ->withErrors($validator)
             ->withInput();
         } else {
+            if($request->hasFile('img')) {
+                $data = [
+                    'nama' => $request->get('nama'),
+                    'harga' => $request->get('harga'),
+                    'deskripsi' => $request->get('deskripsi'),
+                    'img' => $request->file('img')->getClientOriginalName()
+                ];
+                $request->file('img')->storeAs('images', $data['img'], 'public');
+            }else{
             $data = [
-                'name' => $request->get('name'),
+                'nama' => $request->get('nama'),
                 'harga' => $request->get('harga'),
                 'deskripsi' => $request->get('deskripsi'),
-                'img' => $request->get('img')
             ];
+            }
         }
-        product::where('id', $request->get('id'))->update($data);
+        product::where('id', $request->id)->update($data);
+        return redirect()->route('dashboard-admin');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($product)
+    public function destroy($request)
     {
         if(Auth::user()->is_admin){
-            product::where('id', $product->id)->delete();
+            product::where('id', $request)->delete();
         }
+        return redirect()->route('dashboard-admin');
     }
 }

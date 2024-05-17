@@ -9,6 +9,10 @@ class product extends Model
 {
     use HasFactory;
 
+    public function pembelian(){
+        return $this->hasMany(detail_pembelian::class, 'no_produk', 'id');
+    }
+
     protected $fillable = [
         'nama',
         'harga',
