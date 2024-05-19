@@ -30,6 +30,7 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+        $request->session()->put('admin', true);
 
         return redirect()->intended(route('dashboard-admin', absolute: false));
     }
@@ -42,8 +43,8 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-
-        return redirect()->intended(route('dashboard', absolute: false));        
+        $request->session()->put('user', true);
+        return redirect()->intended(route('dashboard', absolute: false));
     }
 
     /**
@@ -51,12 +52,25 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        // Auth::guard('web')->logout();
 
+        // $request->session()->invalidate();
+
+        // $request->session()->regenerateToken();
+
+        // return redirect('/');
+
+        if ($request->session()->has('admin')) {
+            Auth::guard('admin')->logout(); // Logout admin
+            $request->session()->forget('admin'); // Remove admin session key
+        } elseif ($request->session()->has('user')) {
+            Auth::guard('web')->logout(); // Logout user
+            $request->session()->forget('user'); // Remove user session key
+        }
+    
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
-
+    
         return redirect('/');
     }
 }
