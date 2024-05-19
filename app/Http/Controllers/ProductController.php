@@ -41,7 +41,6 @@ class ProductController extends Controller
             'img' => 'required|file|max:10240'
         ]);
         if($validator->fails()){
-            dd($request);
             return redirect()
             ->back()
             ->withErrors($validator)
