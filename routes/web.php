@@ -10,6 +10,7 @@ Route::get('/', function () {
     return view('welcome')->with('products', \App\Models\Product::all());
 });
 
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
