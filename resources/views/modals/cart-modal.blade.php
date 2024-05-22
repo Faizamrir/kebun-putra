@@ -1,5 +1,5 @@
 <!-- Main modal -->
-<div id="static-modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+<div id="static-modal" x-show="openCart" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
             <div class="relative p-4 w-full max-w-2xl max-h-full">
                 <!-- Modal content -->
                 <div class="relative bg-white rounded-lg shadow dark:bg-neutral-800">
@@ -18,48 +18,55 @@
                     <!-- Modal body -->
                     <!-- tampilkan data keranjang dari database disini -->
             <section>
-            <div class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+            <div x-data="cart()" class="mx-auto max-w-screen-xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
                 <div class="mx-auto max-w-3xl">
 
                 <div class="mt-8">
                     <ul class="space-y-4">
-                    <li class="flex items-center gap-4">
+                    {{-- start cart --}}
+                    @foreach ($keranjangs as $item)
+                        
+                    <li id="item_{{ $item->id }}" x-data="{ quantity: {{ $item->jumlah }} }" class="flex items-center gap-4">
                         <img
-                        src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=830&q=80"
+                        src="{{ asset('storage/images/'.$item->product->img) }}"
                         alt=""
                         class="size-16 rounded object-cover"
                         />
 
                         <div>
-                        <h3 class="text-sm text-gray-900 dark:text-white">Basic Tee 6-Pack</h3>
+                        <h3 class="text-sm text-gray-900 dark:text-white">{{ $item->product->nama }}</h3>
 
                         <dl class="mt-0.5 space-y-px text-[16px] text-gray-600 dark:text-white">
                             <div>
-                            <dt class="inline">Size:</dt>
-                            <dd class="inline">XXS</dd>
+                            <dt class="inline">Harga:</dt>
+                            <dd class="inline">{{ $item->product->harga }}</dd>
                             </div>
 
                             <div>
-                            <dt class="inline">Color:</dt>
-                            <dd class="inline">White</dd>
+                            <dt class="inline">Deskripsi:</dt>
+                            <dd class="inline">{{ $item->product->deskripsi }}</dd>
                             </div>
                         </dl>
                         </div>
 
                         <div class="flex flex-1 items-center justify-end gap-2">
-                        <form>
-                            <label for="Line1Qty" class="sr-only"> Quantity </label>
-
+                        <form id="update-cart-form" data-product-id="{{ $item->id }}" method="POST" >
+                            @csrf
+                            <label for="Line1Qty_{{ $item->id }}" class="sr-only"> Quantity </label>
                             <input
+                            x-model="quantity"
+                            @input="updateQTY({{ $item->id }}, quantity)"
                             type="number"
                             min="1"
-                            value="1"
-                            id="Line1Qty"
+                            value="{{ $item->jumlah }}"
+                            id="Line1Qty_{{ $item->id }}"
+                            onchange="updateCart({{ $item->id }}, this.value)"
+                            name="jumlah"
                             class="h-8 w-12 rounded border-gray-200 bg-gray-50 p-0 text-center text-xs text-gray-600 [-moz-appearance:_textfield] focus:outline-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none"
                             />
                         </form>
 
-                        <button class="text-gray-600 transition hover:text-red-600">
+                        <button class="text-gray-600 transition hover:text-red-600" @click="removeItem({{ $item->id }})" >
                             <span class="sr-only">Remove item</span>
 
                             <svg
@@ -69,6 +76,7 @@
                             stroke-width="1.5"
                             stroke="currentColor"
                             class="h-4 w-4"
+                            
                             >
                             <path
                                 stroke-linecap="round"
@@ -79,6 +87,8 @@
                         </button>
                         </div>
                     </li>
+                    @endforeach
+                    {{-- end Cart --}}
                     </ul>
 
                     <div class="mt-8 flex justify-end border-t border-gray-100 pt-8 dark:text-white">
@@ -86,22 +96,22 @@
                         <dl class="space-y-0.5 text-sm text-gray-700">
                         <div class="flex justify-between dark:text-white">
                             <dt>Subtotal</dt>
-                            <dd>£250</dd>
+                            <dd x-text="subtotal">£250</dd>
                         </div>
 
                         <div class="flex justify-between dark:text-white">
                             <dt>VAT</dt>
-                            <dd>£25</dd>
+                            <dd x-text="vat">£25</dd>
                         </div>
 
                         <div class="flex justify-between dark:text-white">
                             <dt>Discount</dt>
-                            <dd>-£20</dd>
+                            <dd x-text="discount">-£20</dd>
                         </div>
 
                         <div class="flex justify-between !text-base font-medium dark:text-white">
                             <dt>Total</dt>
-                            <dd>£200</dd>
+                            <dd x-text="total">£200</dd>
                         </div>
                         </dl>
 
@@ -131,6 +141,8 @@
 
                         <div class="flex justify-end">
                         <a
+                            x-show="total > 0"
+                            @click="checkout()"
                             href="#"
                             class="block rounded bg-gray-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-gray-600"
                         >

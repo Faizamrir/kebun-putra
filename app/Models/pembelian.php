@@ -18,6 +18,7 @@ class pembelian extends Model
     }
 
     protected $fillable = [
+        'id_user',
         'tgl_pembelian',
         'tgl_pembayaran',
         'status_pembayaran',

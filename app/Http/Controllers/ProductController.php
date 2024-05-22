@@ -20,6 +20,11 @@ class ProductController extends Controller
         return view('dashboard-admin', compact('products'));
     }
 
+    public function index_user(){
+        $product = product::all();
+        return view('dashboard', compact('product'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -41,7 +46,6 @@ class ProductController extends Controller
             'img' => 'required|file|max:10240'
         ]);
         if($validator->fails()){
-            ($request);
             return redirect()
             ->back()
             ->withErrors($validator)
@@ -124,4 +128,5 @@ class ProductController extends Controller
         }
         return redirect()->route('dashboard-admin');
     }
+
 }

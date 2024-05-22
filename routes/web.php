@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\ProductController;
@@ -8,13 +9,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome')->with('products', \App\Models\Product::all());
-});
+})->name('index');
 
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
+Route::get('/dashboard', 'App\Http\Controllers\KeranjangController@index')->middleware(['auth', 'verified'])->name('dashboard');
 
 
 // Route::get('/dashboard-admin', function () {
@@ -27,6 +24,13 @@ Route::controller(ProductController::class)->middleware(['auth', 'verified'])
     Route::post('/product-store', 'store')->name('product-store');
     Route::put('/product-update/{id}', 'update')->name('product-update');
     Route::delete('/product-delete/{id}', 'destroy')->name('product-delete');
+});
+
+Route::controller(KeranjangController::class)->middleware(['auth', 'verified'])->group(function () {
+    Route::post('/addcart', 'addCart')->name('addCart');
+    Route::delete('/removeitem/{id}', 'RemoveItem')->name('removeItem');
+    Route::put('/update-cart/{id}', 'updateItem')->name('update-cart');
+    Route::post('/checkout', 'checkout')->name('checkout');
 });
 
 Route::controller(LaporanController::class)->middleware(['auth', 'verified'])->group(function () {

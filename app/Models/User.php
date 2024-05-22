@@ -21,6 +21,10 @@ class User extends Authenticatable
         return $this->hasMany(Pembelian::class, 'id_user', 'id');
     }
 
+    public function keranjang(){
+        return $this->hasMany(Keranjang::class, 'id_user', 'id');
+    }
+
     protected $fillable = [
         'name',
         'email',

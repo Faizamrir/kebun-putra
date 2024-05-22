@@ -1,6 +1,6 @@
 <x-app-layout>
     <!-- carousel -->
-<div class="relative z-10">
+<div class="relative z-10" x-data="{ openCart: false }">
 <div id="default-carousel" class="relative w-full" data-carousel="slide">
     <!-- Carousel wrapper -->
     <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
@@ -103,23 +103,17 @@
         alt=""
         class="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72"
     />
-
+    <form  method="post" action="{{ route('addCart') }}">
+        @csrf
     <div class="relative border border-gray-100 bg-white p-6">
-        
-
         <h3 class="mt-4 text-lg font-medium text-gray-900">{{ $item->nama }}</h3>
-
-        <p class="mt-1.5 text-md text-gray-950">Rp. {{ number_format($item->harga, 0) }}</p>
-
+        <p class="mt-1.5 text-md text-gray-950">Rp. {{ number_format($item->harga, 2) }}</p>
         <h3 class="mt-4 text-sm text-gray-900">{{ $item->deskripsi}}</h3>
-
         <!-- gunakan form ini untuk memasukkan data kedalam keranjang -->
-        <form action="">
-        <button
-        class="mt-4 block w-full rounded bg-yellow-400 p-4 text-sm font-medium transition hover:scale-105"
-    >
-        Add to Cart
-    </button>
+        <input type="hidden" name="no_produk" value="{{ $item->id }}">
+        <button {{ collect($keranjangs)->contains('no_produk', $item->id) ? 'disabled' : '' }} type="submit"class="mt-4 block w-full rounded bg-yellow-400 p-4 text-sm font-medium transition hover:scale-105">
+        {{ collect($keranjangs)->contains('no_produk', $item->id) ? 'Item already in cart' : 'Add to cart' }}
+        </button>
     </form>
     <!-- form sampai sini -->
     </div>
@@ -127,12 +121,9 @@
 
 @endforeach
 
-
-
-{{-- kesini --}}
-
-
-
+    @include('modals.cart-modal')
+    @include('script.cart-script')
+    
 </div>
 <!-- end of product list -->
 

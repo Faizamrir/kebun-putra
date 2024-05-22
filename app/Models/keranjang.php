@@ -9,9 +9,16 @@ class keranjang extends Model
 {
     use HasFactory;
 
+    public function user(){
+        return $this->belongsTo(User::class, 'id_user', 'id');
+    }
+    public function product(){
+        return $this->belongsTo(Product::class, 'no_produk', 'id');
+    }
+
     protected $fillable = [
-        'user_id',
+        'id_user',
         'no_produk',
-        'total'
+        'jumlah'
     ];
 }
