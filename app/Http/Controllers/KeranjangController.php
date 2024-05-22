@@ -65,4 +65,42 @@ class KeranjangController extends Controller
     }
 
     
+<<<<<<< Updated upstream
 }
+=======
+    public function checkout(Request $request){
+        $pesanan = pembelian::create([
+            'id_user' => Auth::user()->id,
+            'tgl_pembelian' => Carbon::now(),
+            'total' => $request->total,
+        ]);
+        foreach($request->items as $item){
+        $detail = detail_pembelian::create([
+            'no_pembelian' => $pesanan->id,
+            'no_produk' => $item['no_produk'],
+            'jumlah' => $item['jumlah'],
+        ]);
+        }
+        
+        $keranjangs = keranjang::where('id_user', Auth::user()->id)->delete();
+        return response()->json(['payment_url' => route('payment', ['id' => $pesanan->id])]);
+    }
+
+    public function payment(Request $request){
+        return view('payment', compact('request'));
+    }
+
+    public function upload(Request $request){
+        $file = $request->file('bukti');
+        $extension = $file->getClientOriginalExtension();
+        $filename = time().'.'.$extension;
+        $file->move('storage/images/', $filename);
+        $pesanan = pembelian::where('id', $request->id)->update([
+            'bukti_pembayaran' => $filename,
+            'status_pembayaran' => 1,
+            'tgl_pembayaran' => Carbon::now()
+        ]);
+        return redirect()->route('dashboard');
+    }
+}
+>>>>>>> Stashed changes

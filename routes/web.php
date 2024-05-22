@@ -26,6 +26,18 @@ Route::controller(ProductController::class)->middleware(['auth', 'verified'])
     Route::delete('/product-delete/{id}', 'destroy')->name('product-delete');
 });
 
+<<<<<<< Updated upstream
+=======
+Route::controller(KeranjangController::class)->middleware(['auth', 'verified'])->group(function () {
+    Route::post('/addcart', 'addCart')->name('addCart');
+    Route::delete('/removeitem/{id}', 'RemoveItem')->name('removeItem');
+    Route::put('/update-cart/{id}', 'updateItem')->name('update-cart');
+    Route::post('/checkout', 'checkout')->name('checkout');
+    Route::get('/payment', 'payment')->name('payment');
+    Route::post('/payment', 'upload')->name('payment');
+});
+
+>>>>>>> Stashed changes
 Route::controller(LaporanController::class)->middleware(['auth', 'verified'])->group(function () {
     Route::get('/laporan', 'index')->name('laporan');
     Route::get('/laporan-pdf/{date}', 'cetakpdf')->name('laporan-pdf');
