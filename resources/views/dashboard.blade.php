@@ -1,28 +1,28 @@
 <x-app-layout>
     <!-- carousel -->
-<div class="relative z-10">
+<div class="relative z-10" x-data="{ openCart: false }">
 <div id="default-carousel" class="relative w-full" data-carousel="slide">
     <!-- Carousel wrapper -->
     <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
         <!-- Item 1 -->
         <div class="hidden duration-700 ease-in-out" data-carousel-item>
-            <img src="{{ asset('storage/images/IMG_4084.HEIC') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+            <img src="{{ asset('storage/images/IMG_4090.jpg') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </div>
         <!-- Item 2 -->
         <div class="hidden duration-700 ease-in-out" data-carousel-item>
-            <img src="{{ asset('images/IMG_4090.heic') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+            <img src="{{ asset('storage/images/IMG_4099.jpg') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </div>
         <!-- Item 3 -->
         <div class="hidden duration-700 ease-in-out" data-carousel-item>
-            <img src="{{ asset('images/IMG_4094.heic') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+            <img src="{{ asset('storage/images/IMG_4094.jpg') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </div>
         <!-- Item 4 -->
         <div class="hidden duration-700 ease-in-out" data-carousel-item>
-            <img src="{{ asset('images/IMG_4099.heic') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+            <img src="{{ asset('storage/images/IMG_4084.jpg') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </div>
         <!-- Item 5 -->
         <div class="hidden duration-700 ease-in-out" data-carousel-item>
-            <img src="{{ asset('images/IMG_4090.heic') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+            <img src="{{ asset('storage/images/kembang.jpg') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
         </div>
     </div>
     <!-- Slider indicators -->
@@ -94,265 +94,38 @@
 
 <!-- product list -->
 <div class="container grid grid-cols-3 gap-4 max-w-4xl mx-auto my-4">
-<a href="#" class="group relative block overflow-hidden">
-<button
-    class="absolute end-4 top-4 z-10 rounded-full bg-white p-1.5 text-gray-900 transition hover:text-gray-900/75">
-    <span class="sr-only">Wishlist</span>
-    <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke-width="1.5"
-    stroke="currentColor"
-    class="h-4 w-4"
-    >
-    <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+        @foreach ($products as $item)
+        {{-- sini --}}
+    <div class="group relative block overflow-hidden">
+
+    <img
+        src="{{ asset('storage/images/'.$item->img) }}"
+        alt=""
+        class="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72"
     />
-    </svg>
-</button>
-
-<img
-    src="https://images.unsplash.com/photo-1599481238640-4c1288750d7a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2664&q=80"
-    alt=""
-    class="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72"
-/>
-
-<div class="relative border border-gray-100 bg-white p-6">
-    <span class="whitespace-nowrap bg-yellow-400 px-3 py-1.5 text-xs font-medium"> New </span>
-
-    <h3 class="mt-4 text-lg font-medium text-gray-900">Robot Toy</h3>
-
-    <p class="mt-1.5 text-sm text-gray-700">$14.99</p>
-
-    <form class="mt-4">
-    <button
-        class="block w-full rounded bg-yellow-400 p-4 text-sm font-medium transition hover:scale-105"
-    >
-        Add to Cart
-    </button>
+    <form  method="post" action="{{ route('addCart') }}">
+        @csrf
+    <div class="relative border border-gray-100 bg-white p-6">
+        <h3 class="mt-4 text-lg font-medium text-gray-900">{{ $item->nama }}</h3>
+        <p class="mt-1.5 text-md text-gray-950">Rp. {{ number_format($item->harga, 2) }}</p>
+        <h3 class="mt-4 text-sm text-gray-900">{{ $item->deskripsi}}</h3>
+        <!-- gunakan form ini untuk memasukkan data kedalam keranjang -->
+        <input type="hidden" name="no_produk" value="{{ $item->id }}">
+        <button {{ collect($keranjangs)->contains('no_produk', $item->id) ? 'disabled' : '' }} type="submit"class="mt-4 block w-full rounded bg-yellow-400 p-4 text-sm font-medium transition hover:scale-105">
+        {{ collect($keranjangs)->contains('no_produk', $item->id) ? 'Item already in cart' : 'Add to cart' }}
+        </button>
     </form>
+    <!-- form sampai sini -->
+    </div>
 </div>
-</a>
 
+@endforeach
 
-<a href="#" class="group relative block overflow-hidden">
-<button
-    class="absolute end-4 top-4 z-10 rounded-full bg-white p-1.5 text-gray-900 transition hover:text-gray-900/75">
-    <span class="sr-only">Wishlist</span>
-    <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke-width="1.5"
-    stroke="currentColor"
-    class="h-4 w-4"
-    >
-    <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-    />
-    </svg>
-</button>
-
-<img
-    src="https://images.unsplash.com/photo-1599481238640-4c1288750d7a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2664&q=80"
-    alt=""
-    class="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72"
-/>
-
-<div class="relative border border-gray-100 bg-white p-6">
-    <span class="whitespace-nowrap bg-yellow-400 px-3 py-1.5 text-xs font-medium"> New </span>
-
-    <h3 class="mt-4 text-lg font-medium text-gray-900">Robot Toy</h3>
-
-    <p class="mt-1.5 text-sm text-gray-700">$14.99</p>
-
-    <form class="mt-4">
-    <button
-        class="block w-full rounded bg-yellow-400 p-4 text-sm font-medium transition hover:scale-105"
-    >
-        Add to Cart
-    </button>
-    </form>
+    @include('modals.cart-modal')
+    @include('script.cart-script')
+    
 </div>
-</a>
-
-<a href="#" class="group relative block overflow-hidden">
-<button
-    class="absolute end-4 top-4 z-10 rounded-full bg-white p-1.5 text-gray-900 transition hover:text-gray-900/75">
-    <span class="sr-only">Wishlist</span>
-    <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke-width="1.5"
-    stroke="currentColor"
-    class="h-4 w-4"
-    >
-    <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-    />
-    </svg>
-</button>
-
-<img
-    src="https://images.unsplash.com/photo-1599481238640-4c1288750d7a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2664&q=80"
-    alt=""
-    class="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72"
-/>
-
-<div class="relative border border-gray-100 bg-white p-6">
-    <span class="whitespace-nowrap bg-yellow-400 px-3 py-1.5 text-xs font-medium"> New </span>
-
-    <h3 class="mt-4 text-lg font-medium text-gray-900">Robot Toy</h3>
-
-    <p class="mt-1.5 text-sm text-gray-700">$14.99</p>
-
-    <form class="mt-4">
-    <button
-        class="block w-full rounded bg-yellow-400 p-4 text-sm font-medium transition hover:scale-105"
-    >
-        Add to Cart
-    </button>
-    </form>
-</div>
-</a>
-
-<a href="#" class="group relative block overflow-hidden">
-<button
-    class="absolute end-4 top-4 z-10 rounded-full bg-white p-1.5 text-gray-900 transition hover:text-gray-900/75">
-    <span class="sr-only">Wishlist</span>
-    <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke-width="1.5"
-    stroke="currentColor"
-    class="h-4 w-4"
-    >
-    <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-    />
-    </svg>
-</button>
-
-<img
-    src="https://images.unsplash.com/photo-1599481238640-4c1288750d7a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2664&q=80"
-    alt=""
-    class="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72"
-/>
-
-<div class="relative border border-gray-100 bg-white p-6">
-    <span class="whitespace-nowrap bg-yellow-400 px-3 py-1.5 text-xs font-medium"> New </span>
-
-    <h3 class="mt-4 text-lg font-medium text-gray-900">Robot Toy</h3>
-
-    <p class="mt-1.5 text-sm text-gray-700">$14.99</p>
-
-    <form class="mt-4">
-    <button
-        class="block w-full rounded bg-yellow-400 p-4 text-sm font-medium transition hover:scale-105"
-    >
-        Add to Cart
-    </button>
-    </form>
-</div>
-</a>
+<!-- end of product list -->
 
 
-<a href="#" class="group relative block overflow-hidden">
-<button
-    class="absolute end-4 top-4 z-10 rounded-full bg-white p-1.5 text-gray-900 transition hover:text-gray-900/75">
-    <span class="sr-only">Wishlist</span>
-    <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke-width="1.5"
-    stroke="currentColor"
-    class="h-4 w-4"
-    >
-    <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-    />
-    </svg>
-</button>
-
-<img
-    src="https://images.unsplash.com/photo-1599481238640-4c1288750d7a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2664&q=80"
-    alt=""
-    class="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72"
-/>
-
-<div class="relative border border-gray-100 bg-white p-6">
-    <span class="whitespace-nowrap bg-yellow-400 px-3 py-1.5 text-xs font-medium"> New </span>
-
-    <h3 class="mt-4 text-lg font-medium text-gray-900">Robot Toy</h3>
-
-    <p class="mt-1.5 text-sm text-gray-700">$14.99</p>
-
-    <form class="mt-4">
-    <button
-        class="block w-full rounded bg-yellow-400 p-4 text-sm font-medium transition hover:scale-105"
-    >
-        Add to Cart
-    </button>
-    </form>
-</div>
-</a>
-
-<a href="#" class="group relative block overflow-hidden">
-<button
-    class="absolute end-4 top-4 z-10 rounded-full bg-white p-1.5 text-gray-900 transition hover:text-gray-900/75">
-    <span class="sr-only">Wishlist</span>
-    <svg
-    xmlns="http://www.w3.org/2000/svg"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke-width="1.5"
-    stroke="currentColor"
-    class="h-4 w-4"
-    >
-    <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-    />
-    </svg>
-</button>
-
-<img
-    src="https://images.unsplash.com/photo-1599481238640-4c1288750d7a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2664&q=80"
-    alt=""
-    class="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72"
-/>
-
-<div class="relative border border-gray-100 bg-white p-6">
-    <span class="whitespace-nowrap bg-yellow-400 px-3 py-1.5 text-xs font-medium"> New </span>
-
-    <h3 class="mt-4 text-lg font-medium text-gray-900">Robot Toy</h3>
-
-    <p class="mt-1.5 text-sm text-gray-700">$14.99</p>
-
-    <form class="mt-4">
-    <button
-        class="block w-full rounded bg-yellow-400 p-4 text-sm font-medium transition hover:scale-105"
-    >
-        Add to Cart
-    </button>
-    </form>
-</div>
-</a>
-
-</div>
 </x-app-layout>

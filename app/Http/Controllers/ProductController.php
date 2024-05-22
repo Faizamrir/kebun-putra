@@ -20,6 +20,11 @@ class ProductController extends Controller
         return view('dashboard-admin', compact('products'));
     }
 
+    public function index_user(){
+        $product = product::all();
+        return view('dashboard', compact('product'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -123,4 +128,5 @@ class ProductController extends Controller
         }
         return redirect()->route('dashboard-admin');
     }
+
 }
