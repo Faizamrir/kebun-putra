@@ -110,6 +110,24 @@ class KeranjangController extends Controller
         }
         
         $keranjangs = keranjang::where('id_user', Auth::user()->id)->delete();
-        
+        return response()->json(['payment_url' => route('payment', ['id' => $pesanan->id])]);
     }
+
+    public function payment(Request $request){
+        return view('payment', compact('request'));
+    }
+
+    public function upload(Request $request){
+        $file = $request->file('bukti');
+        $extension = $file->getClientOriginalExtension();
+        $filename = time().'.'.$extension;
+        $file->move('storage/images/', $filename);
+        $pesanan = pembelian::where('id', $request->id)->update([
+            'bukti_pembayaran' => $filename,
+            'status_pembayaran' => 1,
+            'tgl_pembayaran' => Carbon::now()
+        ]);
+        return redirect()->route('dashboard');
+    }
+    
 }

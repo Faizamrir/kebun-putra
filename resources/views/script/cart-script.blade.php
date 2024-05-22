@@ -1,3 +1,4 @@
+
 <script>
     
     function updateCart(id, qty) {
@@ -65,7 +66,8 @@
                 let index = this.items.findIndex(item => item.id === productId);
                 if (index !== -1) {
                     // Remove the item from the array
-                    this.items.splice(index, 1);
+                    this.items[index].jumlah = parseInt(quantity);
+                    // this.items.splice(index, 1);
                     this.calculateTotals();
                 }
             },
@@ -97,7 +99,7 @@
                         total: this.total
                     },
                     success: function (response) {
-                        console.log(response);
+                        window.location.href = response.payment_url;
                     },
                     error: function(xhr, status, error) {
                         console.log(xhr);

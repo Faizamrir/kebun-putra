@@ -13,6 +13,9 @@ Route::get('/', function () {
 
 Route::get('/dashboard', 'App\Http\Controllers\KeranjangController@index')->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
 
 // Route::get('/dashboard-admin', function () {
 //     return view('dashboard-admin');
@@ -31,6 +34,8 @@ Route::controller(KeranjangController::class)->middleware(['auth', 'verified'])-
     Route::delete('/removeitem/{id}', 'RemoveItem')->name('removeItem');
     Route::put('/update-cart/{id}', 'updateItem')->name('update-cart');
     Route::post('/checkout', 'checkout')->name('checkout');
+    Route::get('/payment', 'payment')->name('payment');
+    Route::post('/payment', 'upload')->name('payment');
 });
 
 Route::controller(LaporanController::class)->middleware(['auth', 'verified'])->group(function () {
