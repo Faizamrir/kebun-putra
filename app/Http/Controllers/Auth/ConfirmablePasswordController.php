@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
+use App\Http\Requests\Auth\LoginAdminRequest;
+use App\Http\Requests\Auth\LoginRequest;
 
 class ConfirmablePasswordController extends Controller
 {
@@ -22,9 +24,11 @@ class ConfirmablePasswordController extends Controller
     /**
      * Confirm the user's password.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(LoginRequest $request): RedirectResponse
     {
-        if (! Auth::guard('web')->validate([
+        $guard = $request instanceof LoginAdminRequest ? 'admin' : 'web';
+
+        if (! Auth::guard($guard)->validate([
             'email' => $request->user()->email,
             'password' => $request->password,
         ])) {
@@ -34,7 +38,6 @@ class ConfirmablePasswordController extends Controller
         }
 
         $request->session()->put('auth.password_confirmed_at', time());
-
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route($guard === 'admin' ? 'dashboard-admin' : 'dashboard', absolute: false));
     }
 }

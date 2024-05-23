@@ -19,11 +19,7 @@ class KeranjangController extends Controller
      */
     public function index()
     {
-        $products = product::all();
-        $keranjangs = keranjang::where('id_user', Auth::user()->id)->with('product')->get();
-        // dd($products->contains('id', $keranjangs[0]->product->id));
-        // dd(collect($keranjangs)->contains('no_produk', $products[2]->id));
-        return view('dashboard', compact('products', 'keranjangs'));
+        //
     }
 
     /**

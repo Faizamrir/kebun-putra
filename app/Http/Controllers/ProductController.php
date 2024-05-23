@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateproductRequest;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use App\Models\keranjang;
 
 class ProductController extends Controller
 {
@@ -21,8 +22,9 @@ class ProductController extends Controller
     }
 
     public function index_user(){
-        $product = product::all();
-        return view('dashboard', compact('product'));
+        $products = product::all();
+        $keranjangs = keranjang::where('id_user', Auth::user()->id)->with('product')->get();
+        return view('dashboard', compact('products', 'keranjangs'));
     }
 
     /**

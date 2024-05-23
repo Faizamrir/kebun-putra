@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\LoginAdminRequest;
+use DebugBar\DebugBar;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,12 +28,14 @@ class AuthenticatedSessionController extends Controller
 
     public function admin_login(LoginAdminRequest $request): RedirectResponse
     {
-        $request->authenticate();
-
-        $request->session()->regenerate();
-        $request->session()->put('admin', true);
-
-        return redirect()->intended(route('dashboard-admin', absolute: false));
+        
+        if ($request->authenticate()) {
+            $request->session()->regenerate();
+            $request->session()->put('admin', true);
+            return redirect()->intended(route('dashboard-admin', absolute: false));
+        } else {
+            return redirect()->route('login')->with('error', 'Invalid credentials');
+        }
     }
 
     /**
@@ -40,11 +43,13 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
-
-        $request->session()->regenerate();
-        $request->session()->put('user', true);
-        return redirect()->intended(route('dashboard', absolute: false));
+        if ($request->authenticate()) {
+            $request->session()->regenerate();
+            $request->session()->put('user', true);
+            return redirect()->intended(route('dashboard-admin', absolute: false));
+        } else {
+            return redirect()->route('login')->with('error', 'Invalid credentials');
+        }
     }
 
     /**

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\KeranjangController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PembelianController;
@@ -11,7 +12,7 @@ Route::get('/', function () {
     return view('welcome')->with('products', \App\Models\Product::all());
 })->name('index');
 
-Route::get('/dashboard', 'App\Http\Controllers\KeranjangController@index')->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [ProductController::class, 'index_user'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/contact', function () {
     return view('contact');
