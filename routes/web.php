@@ -6,6 +6,8 @@ use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PaymentController;
+use Faker\Provider\ar_EG\Payment;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -38,6 +40,12 @@ Route::controller(KeranjangController::class)->middleware(['auth', 'verified'])-
     Route::get('/payment', 'payment')->name('payment');
     Route::post('/payment', 'upload')->name('payment');
 });
+
+Route::controller(PaymentController::class)->middleware(['auth','verified'])->group(function () {
+    Route::get('/getcart', 'getCart')->name('getCart');
+    
+});
+
 
 Route::controller(LaporanController::class)->middleware(['auth', 'verified'])->group(function () {
     Route::get('/laporan', 'index')->name('laporan');

@@ -27,6 +27,8 @@ class ProductController extends Controller
         return view('dashboard', compact('products', 'keranjangs'));
     }
 
+    
+
     /**
      * Show the form for creating a new resource.
      */
@@ -130,5 +132,7 @@ class ProductController extends Controller
         }
         return redirect()->route('dashboard-admin');
     }
+
+    
 
 }

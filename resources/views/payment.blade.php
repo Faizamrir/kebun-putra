@@ -10,20 +10,15 @@
                             src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=830&q=80"
                             alt=""
                             class="size-16 rounded object-cover"
-                            />
+                            /> 
     
                             <div>
-                            <h3 class="text-sm text-gray-900 dark:text-white">Basic Tee 6-Pack</h3>
+                            <h3 class="text-sm text-gray-900 dark:text-white">Nama Tanaman</h3>
     
                             <dl class="mt-0.5 space-y-px text-[16px] text-gray-600 dark:text-white">
                                 <div>
-                                <dt class="inline">Size:</dt>
-                                <dd class="inline">XXS</dd>
-                                </div>
-    
-                                <div>
-                                <dt class="inline">Color:</dt>
-                                <dd class="inline">White</dd>
+                                <dt class="inline">Harga :</dt>
+                                <dd class="inline">Deskripsi :</dd>
                                 </div>
                             </dl>
                             </div>
@@ -50,27 +45,24 @@
                             <dl class="space-y-0.5 text-sm text-gray-700">
                             <div class="flex justify-between dark:text-white">
                                 <dt>Subtotal</dt>
-                                <dd>£250</dd>
+                                <dd>Rp</dd>
                             </div>
     
                             <div class="flex justify-between dark:text-white">
-                                <dt>VAT</dt>
-                                <dd>£25</dd>
+                                <dt>Pajak</dt>
+                                <dd>Rp</dd>
                             </div>
-    
-                            <div class="flex justify-between dark:text-white">
-                                <dt>Discount</dt>
-                                <dd>-£20</dd>
-                            </div>
-    
+
                             <div class="flex justify-between !text-base font-medium dark:text-white">
                                 <dt>Total</dt>
-                                <dd>£200</dd>
+                                <dd>Rp</dd>
                             </div>
                             </dl>
                             <hr>
     
                             <!-- sampai sini batas data keranjang -->
+
+                            <!-- ini adalah form upload pembayaran -->
                             <form action="{{ route('payment') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div>

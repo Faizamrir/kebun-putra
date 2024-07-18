@@ -38,12 +38,12 @@
 
                         <dl class="mt-0.5 space-y-px text-[16px] text-gray-600 dark:text-white">
                             <div>
-                            <dt class="inline">Harga:</dt>
+                            <dt class="inline">Harga : Rp</dt>
                             <dd class="inline">{{ $item->product->harga }}</dd>
                             </div>
 
                             <div>
-                            <dt class="inline">Deskripsi:</dt>
+                            <dt class="inline">Deskripsi :</dt>
                             <dd class="inline">{{ $item->product->deskripsi }}</dd>
                             </div>
                         </dl>
@@ -96,47 +96,21 @@
                         <dl class="space-y-0.5 text-sm text-gray-700">
                         <div class="flex justify-between dark:text-white">
                             <dt>Subtotal</dt>
-                            <dd x-text="subtotal">£250</dd>
+                            <dd x-text="subtotal"></dd>
                         </div>
 
                         <div class="flex justify-between dark:text-white">
-                            <dt>VAT</dt>
-                            <dd x-text="vat">£25</dd>
+                            <dt>Pajak</dt>
+                            <dd x-text="vat"></dd>
                         </div>
 
-                        <div class="flex justify-between dark:text-white">
-                            <dt>Discount</dt>
-                            <dd x-text="discount">-£20</dd>
-                        </div>
 
                         <div class="flex justify-between !text-base font-medium dark:text-white">
                             <dt>Total</dt>
-                            <dd x-text="total">£200</dd>
+                            <dd x-text="total"></dd>
                         </div>
                         </dl>
 
-                        <div class="flex justify-end">
-                        <span
-                            class="inline-flex items-center justify-center rounded-full bg-indigo-100 px-2.5 py-0.5 text-indigo-700"
-                        >
-                            <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            class="-ms-1 me-1.5 h-4 w-4"
-                            >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z"
-                            />
-                            </svg>
-
-                            <p class="whitespace-nowrap text-xs">2 Discounts Applied</p>
-                        </span>
-                        </div>
                         <!-- sampai sini batas data keranjang -->
 
                         <div class="flex justify-end">
