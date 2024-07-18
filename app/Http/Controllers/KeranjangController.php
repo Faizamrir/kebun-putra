@@ -110,7 +110,9 @@ class KeranjangController extends Controller
     }
 
     public function payment(Request $request){
-        return view('payment', compact('request'));
+        $id_pesanan = $request->id;
+        $pesanan = pembelian::with('detail_pembelian', 'detail_pembelian.product')->where('id', $id_pesanan)->get();
+        return view('payment', compact('pesanan'));
     }
 
     public function upload(Request $request){
