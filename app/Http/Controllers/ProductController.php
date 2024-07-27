@@ -5,10 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\product;
 use App\Http\Requests\StoreproductRequest;
 use App\Http\Requests\UpdateproductRequest;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\keranjang;
+use DebugBar\DebugBar;
 
 class ProductController extends Controller
 {
@@ -47,7 +48,7 @@ class ProductController extends Controller
             'nama' => 'required',
             'harga' => 'required',
             'deskripsi' => 'required',
-            'img' => 'required|file|max:10240'
+            'img' => 'required|file|image'
         ]);
         if($validator->fails()){
             return redirect()
@@ -133,6 +134,18 @@ class ProductController extends Controller
         return redirect()->route('dashboard-admin');
     }
 
-    
+    public function search(Request $request)
+    {
+        $query = $request->query('query');
+        
+        if(!Auth::user()){
+            $products = product::where('nama', 'like', "%$query%")->get();
+            return view('product-list', compact('products'))->render();
+        }else{
+            $products = product::where('nama', 'like', "%$query%")->get();
+            $keranjangs = keranjang::where('id_user', Auth::user()->id)->with('product')->get();
+            return view('product-list-cart', compact('products', 'keranjangs'))->render();
+        }
+    }
 
 }

@@ -14,6 +14,8 @@ Route::get('/', function () {
     return view('welcome')->with('products', \App\Models\Product::all());
 })->name('index');
 
+Route::get('/search', [ProductController::class, 'search'])->name('search');
+
 Route::get('/dashboard', [ProductController::class, 'index_user'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/contact', function () {

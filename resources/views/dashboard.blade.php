@@ -26,7 +26,7 @@
         </div>
     </div>
     <!-- Slider indicators -->
-    <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
+    <div class="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2 rtl:space-x-reverse">
         <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
         <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="1"></button>
         <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 3" data-carousel-slide-to="2"></button>
@@ -34,7 +34,7 @@
         <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 5" data-carousel-slide-to="4"></button>
     </div>
     <!-- Slider controls -->
-    <button type="button" class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
+    <button type="button" class="absolute top-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer start-0 group focus:outline-none" data-carousel-prev>
         <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
             <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
@@ -42,7 +42,7 @@
             <span class="sr-only">Previous</span>
         </span>
     </button>
-    <button type="button" class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
+    <button type="button" class="absolute top-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer end-0 group focus:outline-none" data-carousel-next>
         <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
             <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
@@ -56,8 +56,8 @@
 
 <!-- search bar -->
 <section>
-    <form class="max-w-lg mx-auto my-4">
-        <div class="flex">
+    <div class="max-w-lg mx-auto my-4">
+        {{-- <div class="flex">
             <label for="search-dropdown" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Your Email</label>
             <button id="dropdown-button" data-dropdown-toggle="dropdown" class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600" type="button">Kategori <svg class="w-2.5 h-2.5 ms-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
@@ -77,10 +77,10 @@
                     <button type="button" class="inline-flex w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Logos</button>
                 </li>
                 </ul>
-            </div>
+            </div> --}}
             <div class="relative w-full">
-                <input type="search" id="search-dropdown" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Cari Tanaman" required />
-                <button type="submit" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <input type="search" id="search-input" class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Cari Tanaman" required />
+                <button type="submit" id="search-button" class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-white bg-blue-700 rounded-e-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                     </svg>
@@ -88,41 +88,42 @@
                 </button>
             </div>
         </div>
-    </form>
+    </div>
     </section>
 <!-- end of search bar -->
 
 <!-- product list -->
-<div class="container grid grid-cols-3 gap-4 max-w-4xl mx-auto my-4">
+<div id="product-list" class="container grid max-w-4xl grid-cols-3 gap-4 mx-auto my-4">
         @foreach ($products as $item)
         {{-- sini --}}
-    <div class="group relative block overflow-hidden">
+    <div class="relative block overflow-hidden group">
 
     <img
         src="{{ asset('storage/images/'.$item->img) }}"
         alt=""
-        class="h-64 w-full object-cover transition duration-500 group-hover:scale-105 sm:h-72"
+        class="object-cover w-full h-64 transition duration-500 group-hover:scale-105 sm:h-72"
     />
     <form  method="post" action="{{ route('addCart') }}">
         @csrf
-    <div class="relative border border-gray-100 bg-white p-6">
+    <div class="relative p-6 bg-white border border-gray-100">
         <h3 class="mt-4 text-lg font-medium text-gray-900">{{ $item->nama }}</h3>
         <p class="mt-1.5 text-md text-gray-950">Rp. {{ number_format($item->harga, 2) }}</p>
         <h3 class="mt-4 text-sm text-gray-900">{{ $item->deskripsi}}</h3>
         <!-- gunakan form ini untuk memasukkan data kedalam keranjang -->
         <input type="hidden" name="no_produk" value="{{ $item->id }}">
-        <button {{ collect($keranjangs)->contains('no_produk', $item->id) ? 'disabled' : '' }} type="submit"class="mt-4 block w-full rounded bg-yellow-400 p-4 text-sm font-medium transition hover:scale-105">
+        <button {{ collect($keranjangs)->contains('no_produk', $item->id) ? 'disabled' : '' }} type="submit"class="block w-full p-4 mt-4 text-sm font-medium transition bg-yellow-400 rounded hover:scale-105">
         {{ collect($keranjangs)->contains('no_produk', $item->id) ? 'Item already in cart' : 'Add to cart' }}
         </button>
     </form>
     <!-- form sampai sini -->
     </div>
-</div>
+    </div>
 
 @endforeach
 
     @include('modals.cart-modal')
     @include('script.cart-script')
+    @include('script.search')
     
 </div>
 <!-- end of product list -->
